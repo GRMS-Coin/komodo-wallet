@@ -29,7 +29,7 @@ jobs:
       - name: Get stable flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0'  # Замените на вашу версию
+          flutter-version: '3.13.0'  # Измените по необходимости
 
       # Установка Java 17
       - name: Install Java 17
@@ -37,11 +37,12 @@ jobs:
           sudo apt update
           sudo apt install openjdk-17-jdk -y
           sudo update-alternatives --config java
-          echo "JAVA_HOME set to /usr/lib/jvm/java-17-openjdk-amd64"
 
       # Установим Java 17 для Gradle
       - name: Set Java 17 for Gradle
-        run: echo "org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64" >> ~/.gradle/gradle.properties
+        run: |
+          mkdir -p ~/.gradle
+          echo "org.gradle.java.home=/usr/lib/jvm/java-17-openjdk-amd64" > ~/.gradle/gradle.properties
 
       # Подготовка build директории
       - name: Prepare build directory
@@ -88,16 +89,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build-android.zip
-          asset_name: app-release.zip  # Исправляем расширение на .zip
-          asset_content_type: application/zip
+          release_name:
