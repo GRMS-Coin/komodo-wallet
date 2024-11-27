@@ -29,7 +29,8 @@ jobs:
       - name: Get stable flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0'  # Измените по необходимости
+          flutter-version: '3.22.x'
+          channel: 'stable'
 
       # Установка Java 17
       - name: Install Java 17
